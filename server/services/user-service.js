@@ -1,14 +1,17 @@
 const userSchema = require("../db/models/user")
+const { encryptPassword, decryptPassword } = require("../utils/bcrypt")
+const { signToken, refreshToken, verifyToken } = require("../utils/jwt")
 
 const registerUser = async (payload) => {
-    const { email } = payload;
+    const { email, password } = payload;
     try {
         const isEmailExist = await userSchema.findOne({ email });
         if (isEmailExist) {
-            await userSchema.create(payload);
-            return { message: "Sign up successfully!", success: true, status: 200 }
+            return { message: "user already exist", success: false, status: 400 }
         } else {
-            return { message: "No record found", success: false, status: 404 }
+            payload.password = await encryptPassword(password)
+            const data = await userSchema.create(payload);
+            return { message: "Sign up successfully!", data, success: true, status: 200 }
         }
     } catch (error) {
         return { message: error, success: false, status: 400 }
