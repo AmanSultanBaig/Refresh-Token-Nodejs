@@ -1,4 +1,4 @@
-const { registerUser, login } = require("../services/user-service")
+const { registerUser, login, getToken } = require("../services/user-service")
 
 const signUp = async (req, res) => {
     try {
@@ -18,7 +18,17 @@ const signIn = async (req, res) => {
     }
 }
 
+const generateToken = async (req, res) => {
+    try {
+        const data = await getToken(req.body.refreshToken);
+        res.status(data.status).json(data)
+    } catch (error) {
+        res.status(error?.status || 500).json(error.message)
+    }
+}
+
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    generateToken
 }

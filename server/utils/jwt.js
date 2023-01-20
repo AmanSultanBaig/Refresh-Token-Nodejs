@@ -10,8 +10,8 @@ const refreshToken = async (data) => {
     return refresh_token;
 }
 
-const verifyToken = async (token) => {
-    const isVerified = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+const verifyToken = async (token, secret_key) => {
+    const isVerified = await jwt.verify(token, secret_key);
     return isVerified;
 }
 
