@@ -27,8 +27,13 @@ const generateToken = async (req, res) => {
     }
 }
 
+const iAmLoggedIn = (req, res) => {
+    res.send("Loggedin Successfully!")
+}
+
 module.exports = {
     signUp,
     signIn,
-    generateToken
+    generateToken,
+    iAmLoggedIn
 }
